@@ -15,15 +15,32 @@
                     <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Descrizione:</label>
                     <textarea name="description" id="description" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
                 </div>
-                <div class="mb-4">
-                    <label for="schedule" class="block text-gray-700 text-sm font-bold mb-2">Orario:</label>
-                    <input type="text" name="schedule" id="schedule" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                </div>
+                <!-- Campo Data -->
+                    <div class="mb-4">
+                        <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Data:</label>
+                        <input type="date" name="date" id="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+
+                    <!-- Campo Orario -->
+                    <div class="mb-4">
+                        <label for="time" class="block text-gray-700 text-sm font-bold mb-2">Orario:</label>
+                        <input type="time" name="time" id="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+
                 <div class="mb-4">
                     <label for="max_participants" class="block text-gray-700 text-sm font-bold mb-2">Numero Massimo Partecipanti:</label>
                     <input type="number" name="max_participants" id="max_participants" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salva</button>
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
             </form>
         </div>
     </div>

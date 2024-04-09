@@ -9,10 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userId = auth()->id();
-        $bookings = Booking::where('user_id', $userId)->get();
+        $sortBy = $request->query('sort', 'activities.name');
+        $order = $request->query('order', 'asc'); // Default è ascendente; puoi alternare tra 'asc' e 'desc'
+    
+        $bookings = Booking::where('user_id', $userId)
+                    ->join('activities', 'activities.id', '=', 'bookings.activity_id')
+                    ->orderBy($sortBy, $order)
+                    ->select('bookings.*') // Evita conflitti di colonne selezionando solo quelle dei booking
+                    ->get();
+    
         return view('bookings.index', ['bookings' => $bookings]);
     }
 

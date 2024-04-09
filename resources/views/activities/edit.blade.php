@@ -21,11 +21,19 @@
                     <textarea name="description" id="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>{{ $activity->description }}</textarea>
                 </div>
 
-                <!-- Campo Orario -->
+                <!-- Campo Data -->
                 <div class="mb-4">
-                    <label for="schedule" class="block text-gray-700 text-sm font-bold mb-2">Orario:</label>
-                    <input type="text" name="schedule" id="schedule" value="{{ $activity->schedule }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Data:</label>
+                    <input type="date" name="date" id="date" value="{{ $activity->date }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
+
+
+                    <!-- Campo Orario -->
+                    <div class="mb-4">
+                        <label for="time" class="block text-gray-700 text-sm font-bold mb-2">Orario:</label>
+                        <input type="time" name="time" id="time" value="{{ $activity->time }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    </div>
+
 
                 <!-- Campo Numero Massimo Partecipanti -->
                 <div class="mb-4">

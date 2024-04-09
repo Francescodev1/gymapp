@@ -18,12 +18,14 @@ class ActivityFactory extends Factory
      */
     public function definition()
     {
+        $date = $this->faker->dateTimeBetween('now', '+2 years');
+
         return [
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            // Genera una data e ora futura nel formato corretto
-            'schedule' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
-            'max_participants' => $this->faker->numberBetween(5, 10),
+            'date' => $date->format('Y-m-d'), // Ora puoi usare $date qui
+            'time' => $this->faker->time('H:i'), // Genera un orario casuale
+            'max_participants' => $this->faker->numberBetween(5, 20),
         ];
     }
 }

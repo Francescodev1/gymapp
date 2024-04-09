@@ -47,12 +47,16 @@ Route::get('/activities/list', [ActivityController::class, 'list'])->name('activ
 
 Route::middleware(['is_admin'])->group(function () {
  Route::resource('activities', ActivityController::class); 
+
+
 });
 
 
-Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::post('/bookings/{booking}/changeStatus', [BookingController::class, 'changeStatus'])->name('bookings.changeStatus');
+// routes/web.php
+Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
 
+Route::post('bookings', [BookingController::class, 'store'])->name('bookings.store'); 
 Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 
 

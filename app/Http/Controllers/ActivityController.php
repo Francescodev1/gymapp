@@ -28,20 +28,23 @@ public function store(Request $request)
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string',
-        'schedule' => 'required|date_format:d/m/Y H:i', // Assicurati che il formato corrisponda al tuo input
+        'date' => 'required|date_format:Y-m-d',
+
+        'time' => 'required|string', // Aggiunto per l'orario
         'max_participants' => 'required|integer|min:1'
     ]);
 
     $activity = new Activity();
     $activity->name = $validatedData['name'];
     $activity->description = $validatedData['description'];
-    // Conversione della data
-    $activity->schedule = Carbon::createFromFormat('d/m/Y H:i', $validatedData['schedule']);
+    $activity->date = $validatedData['date']; // Assegnato direttamente
+    $activity->time = $validatedData['time']; // Assegnato direttamente
     $activity->max_participants = $validatedData['max_participants'];
     $activity->save();
 
-    return redirect()->route('somewhere')->with('success', 'Attività salvata con successo!');
+    return redirect()->route('activities.index')->with('success', 'Attività salvata con successo!');
 }
+
 
 
 // Mostra il form di modifica
@@ -56,14 +59,23 @@ public function update(Request $request, Activity $activity)
     $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string',
-        'schedule' => 'required|string',
+        'date' => 'required|date_format:Y-m-d',
+        'time' => 'required|string',
         'max_participants' => 'required|integer|min:1'
     ]);
 
-    $activity->update($request->all());
-    
+    // Aggiorna direttamente l'attività con i dati validati
+    $activity->update([
+        'name' => $request->name,
+        'description' => $request->description,
+        'date' => $request->date,
+        'time' => $request->time,
+        'max_participants' => $request->max_participants,
+    ]);
+
     return redirect()->route('activities.index')->with('success', 'Attività aggiornata con successo.');
 }
+
 
 
 public function destroy(Activity $activity)
@@ -79,16 +91,20 @@ public function destroy(Activity $activity)
 
 public function list()
 {
-    $activities = Activity::where('schedule', '>', now())
-                            ->get()
-                            ->filter(function($activity) {
-                                return $activity->bookings->count() < $activity->max_participants;
-                            });
+    // Ottieni la data corrente in formato Y-m-d per confrontarla con la colonna `date`
+    $today = Carbon::now()->format('Y-m-d');
 
-    // dd($activities); // Rimuovi o commenta questa riga dopo il debugging
+    // Filtra le attività future basate sulla nuova struttura
+    $activities = Activity::where('date', '>=', $today)
+        ->get()
+        ->filter(function($activity) {
+            // Qui puoi aggiungere ulteriori filtri, ad esempio, controllare l'orario se necessario
+            return $activity->bookings->count() < $activity->max_participants;
+        });
 
     return view('activities.list', compact('activities'));
 }
+
 
     
 }

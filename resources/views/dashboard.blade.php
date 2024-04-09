@@ -5,7 +5,11 @@
         </h2>
         <nav class="flex space-x-4">
             <a href="{{ route('dashboard') }}" class="text-gray-800 underline">Dashboard</a>
-            <a href="{{ route('activities.index') }}" class="text-gray-800 underline">Attività</a>
+            @auth
+                @if (auth()->user()->is_admin)
+                     <a href="{{ route('activities.index') }}" class="text-gray-800 underline">Attività</a>
+                @endif
+            @endauth
             <a href="{{ route('activities.list') }}" class="text-gray-800 underline">Lista</a>
             <a href="{{ route('bookings.index') }}" class="text-gray-800 underline">Prenotazioni</a>
         </nav>

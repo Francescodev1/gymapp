@@ -12,6 +12,15 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+
+    public function getIsAdminAttribute()
+    {
+        return $this->role === 'admin'; // Assumendo che tu usi una colonna 'role' per determinare se un utente è amministratore
+    }
+
+
+
     /**
      * The attributes that are mass assignable.
      *

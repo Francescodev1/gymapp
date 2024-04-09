@@ -2,24 +2,29 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'schedule', 'max_participants'];
-    protected $dates = ['schedule'];
+    protected $fillable = ['name', 'description', 'date', 'time', 'max_participants'];
+    
     public function bookings()
     {
         return $this->hasMany(Booking::class);
     }
 
-    public function setScheduleAttribute($value)
-{
-    // Aggiorna il formato qui per corrispondere a quello generato dalla factory
-    $this->attributes['schedule'] = Carbon::createFromFormat('Y-m-d H:i:s', $value);
-}
+    // Opzionale: Mutators per 'date' e/o 'time' se necessario
+    public function setDateAttribute($value)
+    {
+        // Esempio di conversione per 'date', se necessario
+        $this->attributes['date'] = $value; // Adattalo secondo le tue necessità
+    }
 
+    public function setTimeAttribute($value)
+    {
+        // Esempio di conversione per 'time', se necessario
+        $this->attributes['time'] = $value; // Adattalo secondo le tue necessità
+    }
 }

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->dateTime('schedule'); // Considera l'uso di un campo più complesso se necessario
+            $table->date('date'); // Aggiunge un campo per la data
+            $table->string('time'); // Aggiunge un campo per l'orario come stringa
+
             $table->unsignedInteger('max_participants');
             $table->timestamps();
         });
