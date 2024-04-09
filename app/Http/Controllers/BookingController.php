@@ -56,4 +56,21 @@ class BookingController extends Controller
 
         return back()->with('success', 'Stato della prenotazione aggiornato con successo.');
     }
+
+
+
+    public function destroy(Booking $booking)
+    {
+        // Verifica che l'utente autenticato sia l'utente che ha effettuato la prenotazione
+        if ($booking->user_id == auth()->id()) {
+            // Elimina la prenotazione
+            $booking->delete();
+
+            // Reindirizza l'utente a una pagina di conferma o alla pagina delle attività
+            return back()->with('success', 'Stato della prenotazione aggiornato con successo.');
+        } else {
+            // Se l'utente non è autorizzato, puoi restituire un messaggio di errore o reindirizzarlo altrove
+            return redirect()->route('bookings.index')->with('error', 'Non sei autorizzato ad annullare questa prenotazione.');
+        }
+    }
 }

@@ -53,6 +53,7 @@ Route::middleware(['is_admin'])->group(function () {
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::post('/bookings/{booking}/changeStatus', [BookingController::class, 'changeStatus'])->name('bookings.changeStatus');
 
+Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 
 
 
