@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->dateTime('date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->string('status')->default('pending');
+            $table->string('schedule'); // Considera l'uso di un campo più complesso se necessario
+            $table->unsignedInteger('max_participants');
             $table->timestamps();
         });
     }

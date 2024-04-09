@@ -3,6 +3,11 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
+        <nav class="flex space-x-4">
+            <a href="{{ route('dashboard') }}" class="text-gray-800 underline">Dashboard</a>
+            <a href="{{ route('activities.index') }}" class="text-gray-800 underline">Attività</a>
+            <a href="{{ route('bookings.index') }}" class="text-gray-800 underline">Prenotazioni</a>
+        </nav>
     </x-slot>
 
     <div class="py-12">

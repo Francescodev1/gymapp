@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Activity;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Activity>
@@ -14,16 +15,13 @@ class ActivityFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence,
-            'date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
-            'start_time' => $this->faker->time,
-            'end_time' => $this->faker->time,
-            'status' => 'pending',
+            'schedule' => $this->faker->time(),
+            'max_participants' => $this->faker->numberBetween(5, 20),
         ];
-        
     }
 }
