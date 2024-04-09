@@ -34,14 +34,25 @@
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                            {{ $booking->activity->schedule->format('d/m/Y H:i') }}
+                                                {{ \Carbon\Carbon::parse($booking->activity->schedule)->format('d/m/Y H:i') }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                             <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                            <span class="relative">Confermato</span>
+                                            <span class="relative">{{ $booking->status }}</span>
                                         </span>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('bookings.changeStatus', ['booking' => $booking->id]) }}" method="POST">
+                                            @csrf
+                                            <select name="status">
+                                                <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confermato</option>
+                                                <option value="canceled" {{ $booking->status == 'canceled' ? 'selected' : '' }}>Annullato</option>
+                                                <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>In attesa</option>
+                                            </select>
+                                            <button type="submit" class="text-red-500">Cambia Stato</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

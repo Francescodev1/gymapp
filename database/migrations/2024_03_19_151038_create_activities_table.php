@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('schedule'); // Considera l'uso di un campo più complesso se necessario
+            $table->dateTime('schedule'); // Considera l'uso di un campo più complesso se necessario
             $table->unsignedInteger('max_participants');
             $table->timestamps();
         });

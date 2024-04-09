@@ -51,6 +51,8 @@ Route::middleware(['is_admin'])->group(function () {
 
 
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+Route::post('/bookings/{booking}/changeStatus', [BookingController::class, 'changeStatus'])->name('bookings.changeStatus');
+
 
 
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ActivityController extends Controller
 {
@@ -24,17 +25,22 @@ public function create()
 // Salva la nuova attività nel database
 public function store(Request $request)
 {
-    $request->validate([
+    $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string',
-        'schedule' => 'required|string',
+        'schedule' => 'required|date_format:d/m/Y H:i', // Assicurati che il formato corrisponda al tuo input
         'max_participants' => 'required|integer|min:1'
     ]);
 
-    Activity::create($request->all());
-    
-    return redirect()->route('activities.index')
-                     ->with('success', 'Attività aggiunta con successo.');
+    $activity = new Activity();
+    $activity->name = $validatedData['name'];
+    $activity->description = $validatedData['description'];
+    // Conversione della data
+    $activity->schedule = Carbon::createFromFormat('d/m/Y H:i', $validatedData['schedule']);
+    $activity->max_participants = $validatedData['max_participants'];
+    $activity->save();
+
+    return redirect()->route('somewhere')->with('success', 'Attività salvata con successo!');
 }
 
 
@@ -73,12 +79,13 @@ public function destroy(Activity $activity)
 
 public function list()
 {
-    // Supponiamo di voler mostrare solo le attività future con posti disponibili
     $activities = Activity::where('schedule', '>', now())
                             ->get()
                             ->filter(function($activity) {
                                 return $activity->bookings->count() < $activity->max_participants;
                             });
+
+    // dd($activities); // Rimuovi o commenta questa riga dopo il debugging
 
     return view('activities.list', compact('activities'));
 }
