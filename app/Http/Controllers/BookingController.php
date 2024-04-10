@@ -10,19 +10,35 @@ use Illuminate\Support\Facades\Auth;
 class BookingController extends Controller
 {
     public function index(Request $request)
-    {
+{
+    if (auth()->user()->is_admin) {
+        $sortBy = $request->query('sort', 'created_at');
+        $order = $request->query('order', 'asc');
+
+        // Modifica qui per gestire l'ordinamento basato sul nome dell'attività
+        if ($sortBy === 'activities.name') {
+            $bookings = Booking::with(['user', 'activity'])
+                            ->join('activities', 'activities.id', '=', 'bookings.activity_id')
+                            ->orderBy('activities.name', $order) // Usa il nome qualificato della colonna
+                            ->select('bookings.*', 'activities.name as activity_name') // Evita conflitti di colonne selezionando quelle necessarie
+                            ->get();
+        } else {
+            $bookings = Booking::with(['user', 'activity'])
+                            ->orderBy($sortBy, $order)
+                            ->get();
+        }
+
+        return view('bookings.admin_index', compact('bookings'));
+    } else {
+        // Logica per utente standard
         $userId = auth()->id();
-        $sortBy = $request->query('sort', 'activities.name');
-        $order = $request->query('order', 'asc'); // Default è ascendente; puoi alternare tra 'asc' e 'desc'
-    
-        $bookings = Booking::where('user_id', $userId)
-                    ->join('activities', 'activities.id', '=', 'bookings.activity_id')
-                    ->orderBy($sortBy, $order)
-                    ->select('bookings.*') // Evita conflitti di colonne selezionando solo quelle dei booking
-                    ->get();
-    
-        return view('bookings.index', ['bookings' => $bookings]);
+        $bookings = Booking::where('user_id', $userId)->with('activity')->get();
+
+        return view('bookings.user_index', compact('bookings'));
     }
+}
+
+
 
     public function store(Request $request)
     {
@@ -37,7 +53,7 @@ class BookingController extends Controller
             $booking = new Booking();
             $booking->user_id = Auth::id();
             $booking->activity_id = $activity->id;
-            $booking->status = 'confirmed'; // Imposta lo stato iniziale
+            $booking->status = 'pending'; // Imposta lo stato iniziale
             $booking->save();
 
             return redirect()->route('activities.list')->with('success', 'Prenotazione effettuata con successo!');

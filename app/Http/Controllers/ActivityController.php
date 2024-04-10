@@ -95,12 +95,8 @@ public function list()
     $today = Carbon::now()->format('Y-m-d');
 
     // Filtra le attività future basate sulla nuova struttura
-    $activities = Activity::where('date', '>=', $today)
-        ->get()
-        ->filter(function($activity) {
-            // Qui puoi aggiungere ulteriori filtri, ad esempio, controllare l'orario se necessario
-            return $activity->bookings->count() < $activity->max_participants;
-        });
+    $activities = Activity::where('date', '>=', $today)->get();
+       
 
     return view('activities.list', compact('activities'));
 }
